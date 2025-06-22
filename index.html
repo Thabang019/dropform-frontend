@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropform - Make your contact form work. No code. No backend.</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+<header>
+    <nav class="container">
+        <div class="logo">Dropform</div>
+        <ul class="nav-links">
+            <li><a href="#features" onclick="showPage('home')">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#docs">Docs</a></li>
+            <li><a href="#contact" onclick="showPage('contact')">Contact</a></li>
+            <li><a href="#login" onclick="showPage('login')" class="login-link">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<!-- Home Page -->
+<div id="home" class="page active">
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Make your contact form work.<br>No code. No backend.</h1>
+                <p class="hero-subtitle">
+                    The easiest way for web designers and freelancers to add working contact forms to any website. 
+                    Just copy, paste, and start receiving emails instantly.
+                </p>
+                <a href="#get-started" class="cta-button">
+                    <span>Try it Now</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How it works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Create your form</h3>
+                    <p>Design your contact form with any HTML and CSS. Keep your existing styling and structure exactly as you want it.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Add our endpoint</h3>
+                    <p>Simply point your form's action to our secure endpoint. No API keys, no complex setup, no backend code required.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Start receiving emails</h3>
+                    <p>That's it! Form submissions are instantly delivered to your inbox. Focus on design, we handle the delivery.</p>
+                </div>
+            </div>
+
+            <div class="code-example">
+                <div class="code-header">
+                    <div class="code-title">Copy-paste form example</div>
+                    <button class="copy-button" onclick="copyCode()">Copy</button>
+                </div>
+                <div class="code-block" id="code-block">
+                <span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"https://dropform.dev/your-unique-id"</span> <span class="attr">method</span>=<span class="value">"POST"</span><span class="tag">&gt;</span>
+                <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"name"</span> <span class="attr">placeholder</span>=<span class="value">"Your Name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+                <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">name</span>=<span class="value">"email"</span> <span class="attr">placeholder</span>=<span class="value">"your@email.com"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+                <span class="tag">&lt;textarea</span> <span class="attr">name</span>=<span class="value">"message"</span> <span class="attr">placeholder</span>=<span class="value">"Your message..."</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+                <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
+                <span class="tag">&lt;/form&gt;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- features Section-->
+    <section id="features" class="features"">
+        <div class="container">
+            <h2 class="section-title">Why designers choose Dropform</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Setup</h3>
+                    <p>No registration required. Start using immediately with just a form action URL.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Your Design</h3>
+                    <p>Keep complete control over your form's look and feel. We handle the backend invisibly.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Spam Protection</h3>
+                    <p>Built-in spam filtering and rate limiting keeps your inbox clean automatically.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <h3>Works Everywhere</h3>
+                    <p>Compatible with any hosting platform. Static sites, WordPress, custom builds - it all works.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Simple Analytics</h3>
+                    <p>Track form submissions and performance with clean, minimal dashboards.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💸</div>
+                    <h3>Fair Pricing</h3>
+                    <p>Pay only for what you use. No monthly fees for low-volume forms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="footer-cta">
+        <div class="container">
+            <h2>Ready to get started?</h2>
+            <p>Join thousands of designers who trust Dropform to power their contact forms.</p>
+            <a href="#get-started" class="cta-button">
+                <span>Get Started</span>
+                <span>→</span>
+            </a>
+        </div>
+    </section>
+    
+</div>
+
+<!-- Login Page -->
+<div id="login" class="page">
+    <section class="login-page">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1>Welcome back</h1>
+                    <p>Sign in to your Dropform account</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="login-button">Sign In</button>
+                </form>
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#signup">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Sign Up Page -->
+<div id="signup" class="page">
+    <section class="login-page">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1>Create your account</h1>
+                    <p>Join thousands of designers using Dropform</p>
+                </div>
+                <form id="signupForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="signupFirstName">First Name</label>
+                            <input type="text" id="signupFirstName" class="form-input" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupLastName">Last Name</label>
+                            <input type="text" id="signupLastName" class="form-input" placeholder="Doe" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email address</label>
+                        <input type="email" id="signupEmail" class="form-input" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" class="form-input" placeholder="Create a strong password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                        <input type="checkbox" id="agreeTerms" required style="width: auto;">
+                        <label for="agreeTerms" style="margin-bottom: 0; font-size: 0.9rem; color: #a0a0a0;">
+                            I agree to the <a href="#terms" style="color: #ffffff;">Terms of Service</a> and <a href="#privacy" style="color: #ffffff;">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="login-button">Create Account</button>
+                </form>
+                <div class="login-footer">
+                    <p>Already have an account? <a href="#login" onclick="showPage('login')">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Contact Page -->
+<div id="contact" class="page">
+    <section class="contact-page">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h1>Get in touch</h1>
+                    <p>Have questions about Dropform? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-method-info">
+                                <h3>Email</h3>
+                                <p>hello@dropform.dev</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <div class="contact-icon">💬</div>
+                            <div class="contact-method-info">
+                                <h3>Live Chat</h3>
+                                <p>Available 9am-5pm EST</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <div class="contact-icon">📚</div>
+                            <div class="contact-method-info">
+                                <h3>Documentation</h3>
+                                <p>Find answers in our docs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h2>Send us a message</h2>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" name="email" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-input" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" class="form-input textarea" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="login-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Dashboard Page -->
+<div id="dashboard" class="page">
+    <section class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-avatar">U</div>
+                    <span>user@example.com</span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="dashboard-card">
+                    <h3>Total Submissions</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #ffffff; margin-top: 1rem;">147</div>
+                    <p style="color: #a0a0a0; margin-top: 0.5rem;">+12 this week</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Active Forms</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #ffffff; margin-top: 1rem;">3</div>
+                    <p style="color: #a0a0a0; margin-top: 0.5rem;">2 forms active</p>
+                </div>
+            </div>
+
+            <div class="dashboard-card token-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Your Form Tokens</h3>
+                    <button class="add-token-btn" onclick="addNewToken()">
+                        <span>+</span>
+                        <span>Add New Token</span>
+                    </button>
+                </div>
+                
+                <div class="token-list">
+                    <div class="token-item">
+                        <div class="token-info">
+                            <div class="token-name">Contact Form - Main Website</div>
+                            <div class="token-id">df_a1b2c3d4e5f6</div>
+                        </div>
+                        <div class="token-stats">
+                            <div>47 submissions</div>
+                            <div>Created 2 weeks ago</div>
+                        </div>
+                        <div class="token-actions">
+                            <button class="btn-small btn-primary" onclick="copyToken('df_a1b2c3d4e5f6')">Copy URL</button>
+                            <button class="btn-small" onclick="viewTokenStats('df_a1b2c3d4e5f6')">Stats</button>
+                            <button class="btn-small btn-danger" onclick="deleteToken('df_a1b2c3d4e5f6')">Delete</button>
+                        </div>
+                    </div>
+                    
+                    <div class="token-item">
+                        <div class="token-info">
+                            <div class="token-name">Portfolio Contact</div>
+                            <div class="token-id">df_x9y8z7w6v5u4</div>
+                        </div>
+                        <div class="token-stats">
+                            <div>23 submissions</div>
+                            <div>Created 1 month ago</div>
+                        </div>
+                        <div class="token-actions">
+                            <button class="btn-small btn-primary" onclick="copyToken('df_x9y8z7w6v5u4')">Copy URL</button>
+                            <button class="btn-small" onclick="viewTokenStats('df_x9y8z7w6v5u4')">Stats</button>
+                            <button class="btn-small btn-danger" onclick="deleteToken('df_x9y8z7w6v5u4')">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+</main>
+
+<script src="functionality.js" defer></script>
+</body>
+
+</html>
