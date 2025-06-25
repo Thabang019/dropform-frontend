@@ -249,12 +249,8 @@
                     <form id="contactForm">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="firstName">First Name</label>
+                                <label for="firstName">Full Name</label>
                                 <input type="text" id="firstName" name="firstName" class="form-input" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" id="lastName" name="lastName" class="form-input" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -269,6 +265,7 @@
                             <label for="message">Message</label>
                             <textarea id="message" name="message" class="form-input textarea" rows="6" required></textarea>
                         </div>
+                        <input type="hidden" id="contactToken" value="4a01af0c-5a85-4a53-966d-5d823a11c269">
                         <button type="submit" class="login-button">Send Message</button>
                     </form>
                 </div>
@@ -279,75 +276,35 @@
 
 <!-- Dashboard Page -->
 <div id="dashboard" class="page">
-    <section class="dashboard">
-        <div class="container">
-            <div class="dashboard-header">
-                <h1 class="dashboard-title">Dashboard</h1>
-                <div class="user-info">
-                    <div class="user-avatar">U</div>
-                    <span>user@example.com</span>
-                    <button class="logout-btn" onclick="logout()">Logout</button>
-                </div>
-            </div>
-            
-            <div class="dashboard-content">
-                <div class="dashboard-card">
-                    <h3>Total Submissions</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #ffffff; margin-top: 1rem;">147</div>
-                    <p style="color: #a0a0a0; margin-top: 0.5rem;">+12 this week</p>
-                </div>
-                <div class="dashboard-card">
-                    <h3>Active Forms</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #ffffff; margin-top: 1rem;">3</div>
-                    <p style="color: #a0a0a0; margin-top: 0.5rem;">2 forms active</p>
-                </div>
-            </div>
+  <div class="dashboard-card welcome-section">
+    <h2>Welcome, <span id="username">...</span> 👋</h2>
+    <p>Here is your contact form code to embed in your site.</p>
+  </div>
 
-            <div class="dashboard-card token-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3>Your Form Tokens</h3>
-                    <button class="add-token-btn" onclick="addNewToken()">
-                        <span>+</span>
-                        <span>Add New Token</span>
-                    </button>
-                </div>
-                
-                <div class="token-list">
-                    <div class="token-item">
-                        <div class="token-info">
-                            <div class="token-name">Contact Form - Main Website</div>
-                            <div class="token-id">df_a1b2c3d4e5f6</div>
-                        </div>
-                        <div class="token-stats">
-                            <div>47 submissions</div>
-                            <div>Created 2 weeks ago</div>
-                        </div>
-                        <div class="token-actions">
-                            <button class="btn-small btn-primary" onclick="copyToken('df_a1b2c3d4e5f6')">Copy URL</button>
-                            <button class="btn-small" onclick="viewTokenStats('df_a1b2c3d4e5f6')">Stats</button>
-                            <button class="btn-small btn-danger" onclick="deleteToken('df_a1b2c3d4e5f6')">Delete</button>
-                        </div>
-                    </div>
-                    
-                    <div class="token-item">
-                        <div class="token-info">
-                            <div class="token-name">Portfolio Contact</div>
-                            <div class="token-id">df_x9y8z7w6v5u4</div>
-                        </div>
-                        <div class="token-stats">
-                            <div>23 submissions</div>
-                            <div>Created 1 month ago</div>
-                        </div>
-                        <div class="token-actions">
-                            <button class="btn-small btn-primary" onclick="copyToken('df_x9y8z7w6v5u4')">Copy URL</button>
-                            <button class="btn-small" onclick="viewTokenStats('df_x9y8z7w6v5u4')">Stats</button>
-                            <button class="btn-small btn-danger" onclick="deleteToken('df_x9y8z7w6v5u4')">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Static Form Preview -->
+  <div class="dashboard-card form-preview">
+    <h3>Your Ready-to-Copy Contact Form</h3>
+    <textarea id="static-form" readonly>
+    Loading form...
+    </textarea>
+    <button class="btn-small" onclick="copyStaticForm()">Copy Code</button>
+  </div>
+
+  <!-- AI Form Generator -->
+  <div class="dashboard-card ai-generator">
+    <h3>Generate a Custom Contact Form with AI</h3>
+
+    <label for="prompt-input" style="font-size: 0.9rem; color: #ccc;">Describe your form:</label>
+    <input type="text" id="prompt-input" placeholder="e.g. A form with name, email, and phone number" />
+
+    <button class="btn-small btn-primary" style="margin-top: 1rem;" onclick="generateForm()">Generate Form</button>
+
+    <div class="generated-form-preview">
+      <label for="generated-code">Generated Form Snippet:</label>
+      <textarea id="generated-code" readonly></textarea>
+      <button class="btn-small" onclick="copyGeneratedCode()">Copy Code</button>
+    </div>
+  </div>
 </div>
 
 

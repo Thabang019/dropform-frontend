@@ -1,3 +1,5 @@
+    document.addEventListener("DOMContentLoaded", () => {
+    
     let currentUser = null;
     
     function showPage(pageId) {
@@ -16,64 +18,246 @@
         window.location.hash = pageId;
     }
 
-    // Handle login form
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+        // Replace this with your actual backend URL
+        const API_BASE_URL = 'http://localhost:8080/api/user/send';
         
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        // Simulate login (in real app, this would make an API call)
-        if (email && password) {
-            currentUser = { email: email, name: email.split('@')[0] };
-            showPage('dashboard');
-            
-            // Update user info in dashboard
-            document.querySelector('.user-info span').textContent = email;
-            document.querySelector('.user-avatar').textContent = email.charAt(0).toUpperCase();
-            
-            // Show success message
-            showNotification('Login successful!', 'success');
-        }
-    });
 
-    // Handle contact form
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Simulate form submission
-        showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
-        
-        // Reset form
-        this.reset();
-    });
 
-    // Logout function
-    function logout() {
-        currentUser = null;
-        showPage('home');
-        showNotification('Logged out successfully', 'info');
-    }
+        // Handle Login/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-    // Token management functions
-    function copyToken(tokenId) {
-        const tokenUrl = `https://dropform.dev/${tokenId}`;
-        navigator.clipboard.writeText(tokenUrl).then(() => {
-            showNotification('Token URL copied to clipboard!', 'success');
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/signin`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ loginEmail: email, loginPassword: password })
+                });
+
+                let result = {};
+                try {
+                    result = await response.json();
+                } catch (err) {
+                    console.warn("Could not parse response JSON");
+                }
+
+                if (response.ok) {
+                    localStorage.setItem("authToken", result.token);
+                    localStorage.setItem("userEmail", email);
+
+                    alert("Login successful!");
+                    showPage('dashboard');
+
+                    // Now retrieve the form token using the email
+                    await loadUserTokenByEmail(email);
+
+                } else {
+                    alert("Login failed: " + (result.message || "Invalid credentials."));
+                }
+            } catch (err) {
+                alert("Network error. Please try again later.");
+                console.error("Fetch error:", err);
+            }
         });
+
+        // Handle Signup/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('signupFirstName').value.trim();
+            const lastName = document.getElementById('signupLastName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+            if (password !== confirmPassword) {
+                return alert("Passwords do not match.");
+            }
+
+            if (!document.getElementById('agreeTerms').checked) {
+                return alert("You must agree to the Terms of Service and Privacy Policy.");
+            }
+
+            const response = await fetch(`${API_BASE_URL}/save`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nameUser: firstName,
+                    lastNameUser: lastName,
+                    emailUser: email,
+                    password: password
+                })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert("Account created successfully!");
+                showPage('dashboard');
+            } else {
+                alert("Signup failed: " + (result.message || "Unknown error."));
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("authToken");
+            if (token) {
+                showPage('dashboard'); // Auto-login
+            } else {
+                showPage('home');
+            }
+        });
+
+        // Handle contact form/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        document.getElementById('contactForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('firstName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const token = document.getElementById('contactToken').value.trim(); // hidden input or auto-filled
+
+            const payload = {
+                name,
+                email,
+                subject,
+                message,
+                token
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/api/email/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showNotification('✅ Message sent successfully! We\'ll get back to you soon.', 'success');
+                    this.reset();
+                } else {
+                    const error = await response.json();
+                    showNotification('❌ Error sending message: ' + (error.message || 'Please try again.'), 'error');
+                }
+            } catch (err) {
+                console.error('Network error:', err);
+                showNotification('❌ Network error. Please try again later.', 'error');
+            }
+        });
+
+    // Logout function///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    function logout() {
+        localStorage.removeItem("authToken");
+        showPage('login');
     }
 
-    function addNewToken() {
-        const tokenName = prompt('Enter a name for your new token:');
-        if (tokenName) {
-            // Simulate token creation
-            const newTokenId = 'df_' + Math.random().toString(36).substr(2, 12);
-            showNotification(`New token "${tokenName}" created!`, 'success');
-            // In a real app, you would refresh the token list here
+    // Get the token using email/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    async function loadUserTokenByEmail(email) {
+        const jwt = localStorage.getItem("authToken");
+
+        if (!jwt) {
+            alert("Missing auth token. Please log in again.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/retrieveToken/${encodeURIComponent(email)}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${jwt}`
+                }
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.token) {
+                window.userToken = result.token;
+
+                // Extract user details
+                const userName = result.userEmail?.nameUser || "User"; // Fallback to "User" if missing
+                const userLastName = result.userEmail?.lastNameUser || "";
+
+                // Update welcome message with the user's name instead of email
+                document.getElementById("username").innerText = `${userName} ${userLastName}`.trim();
+                
+                // Update form preview (if needed)
+                document.getElementById("static-form").value = generateStaticForm(result.token);
+            } else {
+                alert("Failed to retrieve form token. Check your credentials or permissions.");
+            }
+        } catch (err) {
+            console.error("Token fetch error:", err);
+            alert("Could not fetch token from server.");
         }
     }
+        
 
-    // Notification system
+    // Utility to generate form
+    function generateStaticForm(token) {
+        return `<form action="https://yourplatform.com/api/submit" method="POST">
+    <input type="hidden" name="token" value="${token}">
+
+    <label>Name:</label>
+    <input type="text" name="name" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Message:</label>
+    <textarea name="message" required></textarea>
+
+    <button type="submit">Send</button>
+    </form>`;
+    }
+
+    // Update AI Generator/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    function generateForm() {
+        const prompt = document.getElementById("prompt-input").value.toLowerCase();
+        const output = document.getElementById("generated-code");
+
+        let fields = "";
+
+        if (prompt.includes("name")) {
+            fields += '  <label>Name:</label>\n  <input type="text" name="name" required>\n\n';
+        }
+        if (prompt.includes("email")) {
+            fields += '  <label>Email:</label>\n  <input type="email" name="email" required>\n\n';
+        }
+        if (prompt.includes("subject")) {
+            fields += '  <label>Subject:</label>\n  <input type="text" name="subject">\n\n';
+        }
+        if (prompt.includes("message")) {
+            fields += '  <label>Message:</label>\n  <textarea name="message" required></textarea>\n\n';
+        }
+
+        const token = window.userToken || "your_token_here";
+        const formTemplate = `<form action="https://yourplatform.com/api/submit" method="POST">
+                            <input type="hidden" name="token" value="${token}">
+
+        ${fields}  <button type="submit">Send</button>
+        </form>`;
+
+        output.value = formTemplate;
+    }
+
+    function copyGeneratedCode() {
+        const textarea = document.getElementById("generated-code");
+        textarea.select();
+        document.execCommand("copy");
+        alert("Generated form code copied!");
+    }
+
+    function copyStaticForm() {
+        const textarea = document.getElementById("static-form");
+        textarea.select();
+        document.execCommand("copy");
+        alert("Contact form code copied!");
+    }
+
+    // Notification system/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.style.cssText = `
@@ -148,7 +332,7 @@
         }
     });
 
-    // Smooth scrolling for anchor links
+    // Smooth scrolling for anchor links/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -170,7 +354,7 @@
         });
     });
 
-    // Add scroll-based animations
+    // Add scroll-based animations/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -202,11 +386,6 @@
         }
     }
 
-    function viewTokenStats(tokenId) {
-        showNotification('Token statistics feature coming soon!', 'info');
-        // In a real app, this would show detailed analytics
-    }
-
     // Add some interactive features for better UX
     document.addEventListener('DOMContentLoaded', function() {
         // Add loading states to buttons
@@ -226,7 +405,7 @@
             });
         });
 
-        // Add form validation feedback
+        // Add form validation feedback/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         const inputs = document.querySelectorAll('.form-input');
         inputs.forEach(input => {
             input.addEventListener('blur', function() {
@@ -243,7 +422,7 @@
         });
     });
 
-    // Smooth scrolling for anchor links
+    // Smooth scrolling for anchor links/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -255,4 +434,6 @@
                 });
             }
         });
+    });
+
     });
