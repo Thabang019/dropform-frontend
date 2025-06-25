@@ -214,41 +214,171 @@
     }
 
     // Update AI Generator/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    function generateForm() {
-        const prompt = document.getElementById("prompt-input").value.toLowerCase();
-        const output = document.getElementById("generated-code");
+    document.getElementById("generateBtn").addEventListener("click", generateForm);
+    document.getElementById("staticForm").addEventListener("click", copyStaticForm);
+    document.getElementById("GeneratedCode").addEventListener("click", copyGeneratedCode);
+    
+        
+    const GEMINI_API_KEY = "AIzaSyC6D0f4-yB-JJD54aqhtpJOzU6SGMK4hvk"; // Replace with your actual API key
+        
+        async function generateForm() {
+            const prompt = document.getElementById("prompt-input").value.trim();
+            const outputTextarea = document.getElementById("generated-code");
+            const token = "DEMO_TOKEN";
 
-        let fields = "";
+            if (!prompt) {
+                outputTextarea.value = "Please describe your form before generating.";
+                return;
+            }
 
-        if (prompt.includes("name")) {
-            fields += '  <label>Name:</label>\n  <input type="text" name="name" required>\n\n';
+            if (!GEMINI_API_KEY || GEMINI_API_KEY === "your-actual-api-key-here") {
+                outputTextarea.value = "Error: Please set your actual Gemini API key in the code.";
+                return;
+            }
+
+            outputTextarea.value = "Loading AI library...";
+
+            try {
+                // Add timeout to prevent hanging
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error("Operation timed out after 30 seconds")), 30000);
+                });
+
+                await Promise.race([loadGeminiScript(), timeoutPromise]);
+                
+                outputTextarea.value = "Generating form...";
+                
+                const formHtml = await Promise.race([
+                    generateWithGemini(prompt, token, GEMINI_API_KEY),
+                    timeoutPromise
+                ]);
+                
+                outputTextarea.value = formHtml;
+            } catch (error) {
+                console.error("Error:", error);
+                outputTextarea.value = "Error: " + error.message + "\n\nTry refreshing the page and trying again.";
+            }
         }
-        if (prompt.includes("email")) {
-            fields += '  <label>Email:</label>\n  <input type="email" name="email" required>\n\n';
-        }
-        if (prompt.includes("subject")) {
-            fields += '  <label>Subject:</label>\n  <input type="text" name="subject">\n\n';
-        }
-        if (prompt.includes("message")) {
-            fields += '  <label>Message:</label>\n  <textarea name="message" required></textarea>\n\n';
+
+        function copyGeneratedCode() {
+            const code = document.getElementById("generated-code");
+            code.select();
+            document.execCommand("copy");
+            alert("Code copied to clipboard!");
         }
 
-        const token = window.userToken || "your_token_here";
-        const formTemplate = `<form action="https://yourplatform.com/api/submit" method="POST">
-                            <input type="hidden" name="token" value="${token}">
+        // Simplified script loading - try multiple approaches
+        async function loadGeminiScript() {
+            // Method 1: Try ES modules first (most reliable)
+            try {
+                if (!window.GoogleGenerativeAI) {
+                    console.log("Loading Gemini library via dynamic import...");
+                    const module = await import('https://esm.run/@google/generative-ai');
+                    window.GoogleGenerativeAI = module.GoogleGenerativeAI;
+                    console.log("Gemini library loaded successfully");
+                }
+                return;
+            } catch (error) {
+                console.log("ES modules failed, trying UMD approach:", error);
+            }
 
-        ${fields}  <button type="submit">Send</button>
-        </form>`;
+        // Method 2: Fallback to UMD script loading
+        return new Promise((resolve, reject) => {
+                if (window.GoogleGenerativeAI) {
+                    resolve();
+                    return;
+                }
 
-        output.value = formTemplate;
+                console.log("Loading UMD script...");
+                const script = document.createElement('script');
+                script.src = 'https://unpkg.com/@google/generative-ai@latest/dist/index.umd.js';
+                
+                script.onload = () => {
+                    console.log("UMD script loaded");
+                    // Check multiple possible global names
+                    setTimeout(() => {
+                        if (window.GoogleGenerativeAI || window.google?.generativeai) {
+                            window.GoogleGenerativeAI = window.GoogleGenerativeAI || window.google.generativeai.GoogleGenerativeAI;
+                            resolve();
+                        } else {
+                            reject(new Error("Library loaded but GoogleGenerativeAI not found"));
+                        }
+                    }, 500);
+                };
+                
+                script.onerror = () => {
+                    reject(new Error("Failed to load Gemini library"));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+
+    async function generateWithGemini(prompt, token, apiKey) {
+        try {
+            console.log("Initializing Gemini AI...");
+            
+            if (!window.GoogleGenerativeAI) {
+                throw new Error("GoogleGenerativeAI library not available");
+            }
+
+        const genAI = new window.GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        console.log("Sending request to Gemini...");
+
+        const result = await model.generateContent([
+            `Generate a clean HTML contact form based on this description: "${prompt}"
+
+            Requirements:
+            1. Basic structure must be:
+            <form action="https://dropform.dev/your-unique-id" method="POST">
+            <input type="hidden" name="token" value="${token}">
+            <!-- fields go here -->
+            <button type="submit">Send Message</button>
+            </form>
+
+            2. Always include these required fields:
+            - Name (text input with name="name")
+            - Email (email input with name="email") 
+            - Message (textarea with name="message")
+
+            3. Only add these optional fields if mentioned:
+            - Phone number (if "phone" is mentioned, name="phone")
+            - Subject (if "subject" is mentioned, name="subject")
+
+            4. Include proper labels for accessibility
+            5. Never include CSS, JavaScript, or comments
+            6. Return ONLY the HTML code, nothing else.`
+
+        ]);
+
+        const response = await result.response;
+        const text = response.text();
+
+        console.log("Received response from Gemini");
+
+        if (!text || !text.includes("<form")) {
+            throw new Error("Invalid form generated by AI");
+        }
+
+        return text.trim();
+    } catch (error) {
+        console.error("Gemini API Error:", error);
+        
+        // Provide helpful error messages
+        if (error.message.includes("API_KEY")) {
+            throw new Error("Invalid API key. Please check your Gemini API key.");
+        } else if (error.message.includes("quota")) {
+            throw new Error("API quota exceeded. Please try again later.");
+        } else if (error.message.includes("network")) {
+            throw new Error("Network error. Please check your connection.");
+        } else {
+            throw new Error(`AI generation failed: ${error.message}`);
+        }
     }
+}
 
-    function copyGeneratedCode() {
-        const textarea = document.getElementById("generated-code");
-        textarea.select();
-        document.execCommand("copy");
-        alert("Generated form code copied!");
-    }
 
     function copyStaticForm() {
         const textarea = document.getElementById("static-form");

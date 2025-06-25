@@ -287,7 +287,7 @@
     <textarea id="static-form" readonly>
     Loading form...
     </textarea>
-    <button class="btn-small" onclick="copyStaticForm()">Copy Code</button>
+    <button  id="staticForm" class="btn-small">Copy Code</button>
   </div>
 
   <!-- AI Form Generator -->
@@ -297,12 +297,11 @@
     <label for="prompt-input" style="font-size: 0.9rem; color: #ccc;">Describe your form:</label>
     <input type="text" id="prompt-input" placeholder="e.g. A form with name, email, and phone number" />
 
-    <button class="btn-small btn-primary" style="margin-top: 1rem;" onclick="generateForm()">Generate Form</button>
-
+    <button id="generateBtn" class="btn-small btn-primary">Generate Form</button>
     <div class="generated-form-preview">
       <label for="generated-code">Generated Form Snippet:</label>
       <textarea id="generated-code" readonly></textarea>
-      <button class="btn-small" onclick="copyGeneratedCode()">Copy Code</button>
+      <button id="GeneratedCode" class="btn-small">Copy Code</button>
     </div>
   </div>
 </div>
