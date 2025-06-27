@@ -37,21 +37,34 @@
             });
         }
 
-        // Logout function
+    // Logout function///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         document.getElementById("logoutBtn").addEventListener("click", logoutUser);
         function logoutUser() {
             console.log("Logging out...");
-            // Add your logout logic here (clear session, etc.)
-            showPage('home'); // Redirect to home after logout
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("userEmail");
+            
+            window.userToken = null;
+            currentUser = null;
+            showPage('home'); 
             return false; // Prevent default anchor behavior
         }
 
-        // Initialize on load
+    // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             // Load page from URL hash or default to home
             const pageFromHash = window.location.hash.substring(1);
             const initialPage = pageFromHash || 'home';
-            showPage(initialPage);
+
+            const token = localStorage.getItem("authToken");
+            const userEmail = localStorage.getItem("userEmail");
+
+            if (token && userEmail) {
+                showPage('dashboard'); // Auto-login
+                loadUserTokenByEmail(userEmail);
+            } else {
+                showPage(initialPage);
+            }
             
             // Handle back/forward navigation
             window.addEventListener('hashchange', function() {
@@ -61,18 +74,11 @@
                 }
             });
         });
-
     
-    document.addEventListener("DOMContentLoaded", () => {
-    
-    let currentUser = null;
-    
-        // Replace this with your actual backend URL
+    // Replace this with your actual backend URL
         const API_BASE_URL = 'http://localhost:8080/api/user/send';
-        
-
-
-        // Handle Login/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Handle Login/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
@@ -111,7 +117,70 @@
                 console.error("Fetch error:", err);
             }
         });
+    
 
+    // Get the token using email/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        async function loadUserTokenByEmail(email) {
+            const jwt = localStorage.getItem("authToken");
+
+            if (!jwt) {
+                alert("Missing auth token. Please log in again.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/retrieveToken/${encodeURIComponent(email)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${jwt}`
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.token) {
+                    window.userToken = result.token;
+
+                    // Extract user details
+                    const userName = result.userEmail?.nameUser || "User"; // Fallback to "User" if missing
+                    const userLastName = result.userEmail?.lastNameUser || "";
+
+                    // Update welcome message with the user's name instead of email
+                    document.getElementById("username").innerText = `${userName} ${userLastName}`.trim();
+                    
+                    // Update form preview (if needed)
+                    document.getElementById("static-form").value = generateStaticForm(result.token);
+                } else {
+                    alert("Failed to retrieve form token. Check your credentials or permissions.");
+                }
+            } catch (err) {
+                console.error("Token fetch error:", err);
+                alert("Could not fetch token from server.");
+            }
+        }
+
+    // Utility to generate form
+        function generateStaticForm(token) {
+                return `<form action="https://yourplatform.com/api/submit" method="POST">
+            <input type="hidden" name="token" value="${token}">
+
+            <label>Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" required>
+
+            <label>Message:</label>
+            <textarea name="message" required></textarea>
+
+            <button type="submit">Send</button>
+            </form>`;
+        }
+
+
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        
         // Handle Signup/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         document.getElementById('signupForm').addEventListener('submit', async function (e) {
             e.preventDefault();
@@ -147,15 +216,6 @@
                 showPage('dashboard');
             } else {
                 alert("Signup failed: " + (result.message || "Unknown error."));
-            }
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const token = localStorage.getItem("authToken");
-            if (token) {
-                showPage('dashboard'); // Auto-login
-            } else {
-                showPage('home');
             }
         });
 
@@ -197,71 +257,6 @@
             }
         });
 
-    // Logout function///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    function logout() {
-        localStorage.removeItem("authToken");
-        showPage('login');
-    }
-
-    // Get the token using email/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    async function loadUserTokenByEmail(email) {
-        const jwt = localStorage.getItem("authToken");
-
-        if (!jwt) {
-            alert("Missing auth token. Please log in again.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/retrieveToken/${encodeURIComponent(email)}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${jwt}`
-                }
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.token) {
-                window.userToken = result.token;
-
-                // Extract user details
-                const userName = result.userEmail?.nameUser || "User"; // Fallback to "User" if missing
-                const userLastName = result.userEmail?.lastNameUser || "";
-
-                // Update welcome message with the user's name instead of email
-                document.getElementById("username").innerText = `${userName} ${userLastName}`.trim();
-                
-                // Update form preview (if needed)
-                document.getElementById("static-form").value = generateStaticForm(result.token);
-            } else {
-                alert("Failed to retrieve form token. Check your credentials or permissions.");
-            }
-        } catch (err) {
-            console.error("Token fetch error:", err);
-            alert("Could not fetch token from server.");
-        }
-    }
-        
-
-    // Utility to generate form
-    function generateStaticForm(token) {
-        return `<form action="https://yourplatform.com/api/submit" method="POST">
-    <input type="hidden" name="token" value="${token}">
-
-    <label>Name:</label>
-    <input type="text" name="name" required>
-
-    <label>Email:</label>
-    <input type="email" name="email" required>
-
-    <label>Message:</label>
-    <textarea name="message" required></textarea>
-
-    <button type="submit">Send</button>
-    </form>`;
-    }
-
     // Update AI Generator/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     document.getElementById("generateBtn").addEventListener("click", generateForm);
     document.getElementById("staticForm").addEventListener("click", copyStaticForm);
@@ -273,7 +268,7 @@
         async function generateForm() {
             const prompt = document.getElementById("prompt-input").value.trim();
             const outputTextarea = document.getElementById("generated-code");
-            const token = "DEMO_TOKEN";
+            const token = window.userToken;
 
             if (!prompt) {
                 outputTextarea.value = "Please describe your form before generating.";
@@ -363,70 +358,70 @@
             });
         }
 
-    async function generateWithGemini(prompt, token, apiKey) {
-        try {
-            console.log("Initializing Gemini AI...");
-            
-            if (!window.GoogleGenerativeAI) {
-                throw new Error("GoogleGenerativeAI library not available");
+        async function generateWithGemini(prompt, token, apiKey) {
+            try {
+                console.log("Initializing Gemini AI...");
+                
+                if (!window.GoogleGenerativeAI) {
+                    throw new Error("GoogleGenerativeAI library not available");
+                }
+
+            const genAI = new window.GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+            console.log("Sending request to Gemini...");
+
+            const result = await model.generateContent([
+                `Generate a clean HTML contact form based on this description: "${prompt}"
+
+                Requirements:
+                1. Basic structure must be:
+                <form action="https://dropform.dev/your-unique-id" method="POST">
+                <input type="hidden" name="token" value="${token}">
+                <!-- fields go here -->
+                <button type="submit">Send Message</button>
+                </form>
+
+                2. Always include these required fields:
+                - Name (text input with name="name")
+                - Email (email input with name="email") 
+                - Message (textarea with name="message")
+
+                3. Only add these optional fields if mentioned:
+                - Phone number (if "phone" is mentioned, name="phone")
+                - Subject (if "subject" is mentioned, name="subject")
+
+                4. Include proper labels for accessibility
+                5. Never include CSS, JavaScript, or comments
+                6. Return ONLY the HTML code, nothing else.`
+
+            ]);
+
+            const response = await result.response;
+            const text = response.text();
+
+            console.log("Received response from Gemini");
+
+            if (!text || !text.includes("<form")) {
+                throw new Error("Invalid form generated by AI");
             }
 
-        const genAI = new window.GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-        console.log("Sending request to Gemini...");
-
-        const result = await model.generateContent([
-            `Generate a clean HTML contact form based on this description: "${prompt}"
-
-            Requirements:
-            1. Basic structure must be:
-            <form action="https://dropform.dev/your-unique-id" method="POST">
-            <input type="hidden" name="token" value="${token}">
-            <!-- fields go here -->
-            <button type="submit">Send Message</button>
-            </form>
-
-            2. Always include these required fields:
-            - Name (text input with name="name")
-            - Email (email input with name="email") 
-            - Message (textarea with name="message")
-
-            3. Only add these optional fields if mentioned:
-            - Phone number (if "phone" is mentioned, name="phone")
-            - Subject (if "subject" is mentioned, name="subject")
-
-            4. Include proper labels for accessibility
-            5. Never include CSS, JavaScript, or comments
-            6. Return ONLY the HTML code, nothing else.`
-
-        ]);
-
-        const response = await result.response;
-        const text = response.text();
-
-        console.log("Received response from Gemini");
-
-        if (!text || !text.includes("<form")) {
-            throw new Error("Invalid form generated by AI");
-        }
-
-        return text.trim();
-    } catch (error) {
-        console.error("Gemini API Error:", error);
-        
-        // Provide helpful error messages
-        if (error.message.includes("API_KEY")) {
-            throw new Error("Invalid API key. Please check your Gemini API key.");
-        } else if (error.message.includes("quota")) {
-            throw new Error("API quota exceeded. Please try again later.");
-        } else if (error.message.includes("network")) {
-            throw new Error("Network error. Please check your connection.");
-        } else {
-            throw new Error(`AI generation failed: ${error.message}`);
+            return text.trim();
+        } catch (error) {
+            console.error("Gemini API Error:", error);
+            
+            // Provide helpful error messages
+            if (error.message.includes("API_KEY")) {
+                throw new Error("Invalid API key. Please check your Gemini API key.");
+            } else if (error.message.includes("quota")) {
+                throw new Error("API quota exceeded. Please try again later.");
+            } else if (error.message.includes("network")) {
+                throw new Error("Network error. Please check your connection.");
+            } else {
+                throw new Error(`AI generation failed: ${error.message}`);
+            }
         }
     }
-}
 
 
     function copyStaticForm() {
