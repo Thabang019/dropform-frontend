@@ -1,23 +1,72 @@
+    function showPage(pageId) {
+            console.log("Showing page:", pageId);
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update URL hash
+            window.location.hash = pageId;
+            
+            // Update navigation buttons
+            updateNavigation(pageId);
+    }
+
+    // Navigation update function
+        function updateNavigation(pageId) {
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (!loginBtn || !logoutBtn) return;
+            
+            // Show logout only on dashboard, show login otherwise
+            const isDashboard = pageId === 'dashboard';
+            loginBtn.style.display = isDashboard ? 'none' : 'block';
+            logoutBtn.style.display = isDashboard ? 'block' : 'none';
+            
+            // Optional: Update active nav link styling
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.toggle('active', link.getAttribute('onclick')?.includes(`'${pageId}'`));
+            });
+        }
+
+        // Logout function
+        document.getElementById("logoutBtn").addEventListener("click", logoutUser);
+        function logoutUser() {
+            console.log("Logging out...");
+            // Add your logout logic here (clear session, etc.)
+            showPage('home'); // Redirect to home after logout
+            return false; // Prevent default anchor behavior
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load page from URL hash or default to home
+            const pageFromHash = window.location.hash.substring(1);
+            const initialPage = pageFromHash || 'home';
+            showPage(initialPage);
+            
+            // Handle back/forward navigation
+            window.addEventListener('hashchange', function() {
+                const pageFromHash = window.location.hash.substring(1);
+                if (pageFromHash) {
+                    showPage(pageFromHash);
+                }
+            });
+        });
+
+    
     document.addEventListener("DOMContentLoaded", () => {
     
     let currentUser = null;
     
-    function showPage(pageId) {
-        // Hide all pages
-        document.querySelectorAll('.page').forEach(page => {
-            page.classList.remove('active');
-        });
-        
-        // Show selected page
-        const targetPage = document.getElementById(pageId);
-        if (targetPage) {
-            targetPage.classList.add('active');
-        }
-        
-        // Update URL hash
-        window.location.hash = pageId;
-    }
-
         // Replace this with your actual backend URL
         const API_BASE_URL = 'http://localhost:8080/api/user/send';
         
