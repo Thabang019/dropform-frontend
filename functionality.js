@@ -161,20 +161,20 @@
 
     // Utility to generate form
         function generateStaticForm(token) {
-                return `<form action="https://yourplatform.com/api/submit" method="POST">
-            <input type="hidden" name="token" value="${token}">
+                return `<form action="https://dropform.dev/submit/" method="POST">
+        <input type="hidden" name="token" value="${token}">
 
-            <label>Name:</label>
-            <input type="text" name="name" required>
+        <label>Name:</label>
+        <input type="text" name="name" required>
 
-            <label>Email:</label>
-            <input type="email" name="email" required>
+        <label>Email:</label>
+        <input type="email" name="email" required>
 
-            <label>Message:</label>
-            <textarea name="message" required></textarea>
+        <label>Message:</label>
+        <textarea name="message" required></textarea>
 
-            <button type="submit">Send</button>
-            </form>`;
+        <button type="submit">Send</button>
+        </form>`;
         }
 
 
