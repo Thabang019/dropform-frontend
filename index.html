@@ -14,7 +14,7 @@
         <div class="logo">Dropform</div>
         <ul class="nav-links">
             <li><a href="#features" onclick="showPage('home')">Features</a></li>
-            <li><a href="#docs" onclick="showPage('doc')">Docs</a></li>
+            <li><a href="#docs" onclick="showPage('doc')">Documentation</a></li>
             <li><a href="#contact" onclick="showPage('contact')">Contact</a></li>
             <li><a href="#login" onclick="showPage('login')" class="login-link" id="loginBtn">Login</a></li>
             <li><a href="#logout" class="logout-link" id="logoutBtn" style="display: none;">Logout</a></li>
@@ -34,7 +34,7 @@
                     The easiest way for web designers and freelancers to add working contact forms to any website. 
                     Just copy, paste, and start receiving emails instantly.
                 </p>
-                <a href="#get-started" class="cta-button">
+                <a href="#login" class="cta-button">
                     <span>Try it Now</span>
                     <span>→</span>
                 </a>
@@ -351,213 +351,219 @@
 <!-- Documentation Page -->
 <div id="doc" class="page">
     <div class="docs-container">
+        <aside class="sidebar">
+            <h3>Getting Started</h3>
+            <ul>
+                <li><a href="#quick-start" class="active">Quick Start Guide</a></li>
+                <li><a href="#basic-setup">Initial Configuration</a></li>
+            </ul>
+        
+            <h3>Form Configuration</h3>
+            <ul>
+                <li><a href="#html-forms">HTML Form Integration</a></li>
+            </ul>
+        
+            <h3>Advanced Features</h3>
+            <ul>
+                <li><a href="#redirect">Submission Redirects</a></li>
+                <li><a href="#spam-protection">Spam Mitigation</a></li>
+            </ul>
+        
+            <h3>Implementation Examples</h3>
+            <ul>
+                <li><a href="#contact-form">Standard Contact Form</a></li>
+            </ul>
+        </aside>
 
-            <aside class="sidebar">
-                <h3>Getting Started</h3>
-                <ul>
-                    <li><a href="#quick-start" class="active">Quick Start</a></li>
-                    <li><a href="#basic-setup">Basic Setup</a></li>
-                </ul>
+        <div class="docs-content">
+            <h1>Dropform Documentation</h1>
+            <p>Welcome to the Dropform documentation. This guide will help you implement fully functional contact forms on any website within minutes, eliminating the need for backend development.</p>
 
-                <h3>Form Configuration</h3>
-                <ul>
-                    <li><a href="#html-forms">HTML Forms</a></li>
-                </ul>
+            <h2 id="quick-start">Quick Start Guide</h2>
+            <p>Implement your contact form in three straightforward steps:</p>
 
-                <h3>Advanced</h3>
-                <ul>
-                    <li><a href="#redirect">Redirects</a></li>
-                    <li><a href="#spam-protection">Spam Protection</a></li>
-                </ul>
+            <h3>1. Account Creation</h3>
+            <p>Register for a Dropform account to obtain your unique form authentication token.</p>
 
-                <h3>Examples</h3>
-                <ul>
-                    <li><a href="#contact-form">Contact Form</a></li>
-                </ul>
-            </aside>
-
-            <div class="docs-content">
-
-                <h1>Documentation</h1>
-                <p>Welcome to Dropform documentation. Learn how to add working contact forms to any website in minutes, without any backend code.</p>
-
-                <div class="alert alert-info">
-                    <strong>New to Dropform?</strong> Start with our <a href="#quick-start" style="color: #93c5fd;">Quick Start Guide</a> to get your first form working in under 5 minutes.
+            <div class="code-example">
+                <div class="code-header">
+                    <span class="code-title">Standard Contact Form Implementation</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 </div>
+<div class="code-block">
+<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"https://dropform.dev/submit/"</span> <span class="attr">method</span>=<span class="value">"POST"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">hidden</span>=<span class="value">"text"</span> <span class="attr">token</span>=<span class="value">"token"</span> <span class="attr">placeholder</span>=<span class="value">"15157452c-1275ffr-41fv17h745"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"name"</span> <span class="attr">placeholder</span>=<span class="value">"Your Name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">name</span>=<span class="value">"email"</span> <span class="attr">placeholder</span>=<span class="value">"your@email.com"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;textarea</span> <span class="attr">name</span>=<span class="value">"message"</span> <span class="attr">placeholder</span>=<span class="value">"Your message..."</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
+</div>
+            </div>
 
-                <h2 id="quick-start">Quick Start</h2>
-                <p>Get your contact form working in 3 simple steps:</p>
+            <h3>2. Form Implementation</h3>
+            <p>Integrate the form code into your HTML document. Ensure the token matches the one provided in your dashboard.</p>
 
-                <h3>1. Create Your HTML Form</h3>
-                <p>Start with any HTML form. Keep your existing styling and structure.</p>
+<div class="code-block">
+<span class="tag">&lt;input</span> <span class="attr">hidden</span>=<span class="value">"text"</span> <span class="attr">token</span>=<span class="value">"token"</span> <span class="attr">placeholder</span>=<span class="value">"15157452c-1275ffr-41fv17h745"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+</div>
 
-                <div class="code-example">
-                    <div class="code-header">
-                        <span class="code-title">Basic Contact Form</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
+            <h3>3. Submission Monitoring</h3>
+            <p>Your implementation is complete. Form submissions will be delivered to your designated email address in real-time.</p>
 
-    <div class="code-block">
-    <span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"https://dropform.dev/submit/your-form-id"</span> <span class="attr">method</span>=<span class="value">"POST"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"name"</span> <span class="attr">placeholder</span>=<span class="value">"Your Name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">name</span>=<span class="value">"email"</span> <span class="attr">placeholder</span>=<span class="value">"your@email.com"</span> <span class="attr">required</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;textarea</span> <span class="attr">name</span>=<span class="value">"message"</span> <span class="attr">placeholder</span>=<span class="value">"Your message..."</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
-    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
-    <span class="tag">&lt;/form&gt;</span>
-    </div>
-                </div>
+            <div class="alert alert-success">
+                <strong>Recommendation:</strong> Validate your form functionality by submitting a test entry. Delivery typically occurs within seconds.
+            </div>
 
-                <h3>2. Get Your Form ID</h3>
-                <p>Sign up for Dropform and get your unique form ID. Replace <code>your-form-id</code> in the action URL above.</p>
+            <h2 id="basic-setup">Initial Configuration</h2>
+            <p>Dropform seamlessly integrates with any HTML form by configuring the <code>action</code> attribute to our submission endpoint.</p>
 
-                <h3>3. Start Receiving Emails</h3>
-                <p>That's it! Form submissions will be delivered directly to your inbox instantly.</p>
+            <h3>Endpoint Configuration</h3>
+            <p>The required form action URL follows this standardized format:</p>
+            <div class="code-example">
+                <div class="code-block">https://dropform.dev/submit/</div>
+            </div>
 
-                <div class="alert alert-success">
-                    <strong>Pro Tip:</strong> Test your form by submitting it yourself. You should receive the email within seconds.
-                </div>
+            <h3>Mandatory Attributes</h3>
+            <ul>
+                <li><code>action</code>: Must reference your unique Dropform endpoint</li>
+                <li><code>method</code>: Requires <code>POST</code> submission method</li>
+                <li><code>name</code>: All input fields must include a name attribute</li>
+            </ul>
 
-                <h2 id="basic-setup">Basic Setup</h2>
-                <p>Dropform works with any HTML form by simply pointing the <code>action</code> attribute to our endpoint.</p>
+            <h2 id="form-fields">Supported Field Types</h2>
+            <p>Dropform accommodates all standard HTML form field elements:</p>
 
-                <h3>Form Action URL</h3>
-                <p>Your form action URL follows this pattern:</p>
-                <div class="code-example">
-                    <div class="code-block">https://dropform.dev/submit/YOUR_FORM_ID</div>
-                </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field Type</th>
+                        <th>HTML Implementation</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Text Input</td>
+                        <td><code>&lt;input type="text" name="name"&gt;</code></td>
+                        <td>Single-line text input field</td>
+                    </tr>
+                    <tr>
+                        <td>Email Input</td>
+                        <td><code>&lt;input type="email" name="email"&gt;</code></td>
+                        <td>Email field with automatic validation</td>
+                    </tr>
+                    <tr>
+                        <td>Text Area</td>
+                        <td><code>&lt;textarea name="message"&gt;&lt;/textarea&gt;</code></td>
+                        <td>Multi-line text input field</td>
+                    </tr>
+                    <tr>
+                        <td>Telephone Input</td>
+                        <td><code>&lt;input type="tel" name="phone"&gt;</code></td>
+                        <td>Telephone number input field</td>
+                    </tr>
+                    <tr>
+                        <td>Selection Dropdown</td>
+                        <td><code>&lt;select name="subject"&gt;...&lt;/select&gt;</code></td>
+                        <td>Selectable dropdown menu</td>
+                    </tr>
+                    <tr>
+                        <td>Checkbox</td>
+                        <td><code>&lt;input type="checkbox" name="newsletter"&gt;</code></td>
+                        <td>Individual checkbox element</td>
+                    </tr>
+                    <tr>
+                        <td>Radio Button</td>
+                        <td><code>&lt;input type="radio" name="type"&gt;</code></td>
+                        <td>Radio button selection group</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <p>Replace <code>YOUR_FORM_ID</code> with the unique ID provided in your dashboard.</p>
+            <h2 id="redirect">AI-Powered Form Generation</h2>
+            <p>Automatically generate form templates based on natural language descriptions</p>
 
-                <h3>Required Attributes</h3>
-                <ul>
-                    <li><code>action</code>: Must point to your Dropform endpoint</li>
-                    <li><code>method</code>: Must be <code>POST</code></li>
-                    <li><code>name</code>: Each input must have a name attribute</li>
-                </ul>
+            <div class="dashboard-card ai-generator">
+                <label for="prompt-input" style="font-size: 0.9rem; color: #ccc;">Describe your form requirements:</label>
+                <input type="text" id="prompt-input" placeholder="e.g. A form with name, email, and phone number fields" />
 
-                <h2 id="form-fields">Form Fields</h2>
-                <p>Dropform supports all standard HTML form fields:</p>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Field Type</th>
-                            <th>HTML</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Text Input</td>
-                            <td><code>&lt;input type="text" name="name"&gt;</code></td>
-                            <td>Single line text input</td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td><code>&lt;input type="email" name="email"&gt;</code></td>
-                            <td>Email with built-in validation</td>
-                        </tr>
-                        <tr>
-                            <td>Textarea</td>
-                            <td><code>&lt;textarea name="message"&gt;&lt;/textarea&gt;</code></td>
-                            <td>Multi-line text input</td>
-                        </tr>
-                        <tr>
-                            <td>Phone</td>
-                            <td><code>&lt;input type="tel" name="phone"&gt;</code></td>
-                            <td>Phone number input</td>
-                        </tr>
-                        <tr>
-                            <td>Select</td>
-                            <td><code>&lt;select name="subject"&gt;...&lt;/select&gt;</code></td>
-                            <td>Dropdown selection</td>
-                        </tr>
-                        <tr>
-                            <td>Checkbox</td>
-                            <td><code>&lt;input type="checkbox" name="newsletter"&gt;</code></td>
-                            <td>Single checkbox</td>
-                        </tr>
-                        <tr>
-                            <td>Radio</td>
-                            <td><code>&lt;input type="radio" name="type"&gt;</code></td>
-                            <td>Radio button group</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-
-                <h2 id="redirect">Custom Redirects</h2>
-                <p>Redirect users to a custom thank you page after form submission:</p>
-
-                <div class="code-example">
-                    <div class="code-block"><span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"hidden"</span> <span class="attr">name</span>=<span class="value">"_redirect"</span> <span class="attr">value</span>=<span class="value">"https://yoursite.com/thank-you"</span><span class="tag">&gt;</span></div>
-                </div>
-
-                <div class="alert alert-warning">
-                    <strong>Note:</strong> Redirect URLs must be on the same domain as your form for security reasons.
-                </div>
-
-                <h2 id="spam-protection">Spam Protection</h2>
-                <p>Dropform includes built-in spam protection, but you can add a honeypot field for extra security:</p>
-
-                <div class="code-example">
-                    <div class="code-header">
-                    <span class="code-title">Honeypot Anti-Spam</span>
-                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
+                <button id="generateBtn" class="btn-small btn-primary">Generate Form Template</button>
+                <div class="generated-form-preview">
+                    <label for="generated-code">Generated Form Code:</label>
                     
-<div class="code-block"><span class="comment">/* Hide this field with CSS */</span>
-<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"_honeypot"</span> <span class="attr">style</span>=<span class="value">"display: none;"</span> <span class="attr">tabindex</span>=<span class="value">"-1"</span><span class="tag">&gt;</span></div>
+<div class="code-block">
+<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"https://dropform.dev/submit/"</span> <span class="attr">method</span>=<span class="value">"POST"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">hidden</span>=<span class="value">"text"</span> <span class="attr">token</span>=<span class="value">"token"</span> <span class="attr">placeholder</span>=<span class="value">"15157452c-1275ffr-41fv17h745"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"name"</span> <span class="attr">placeholder</span>=<span class="value">"Your Name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">name</span>=<span class="value">"email"</span> <span class="attr">placeholder</span>=<span class="value">"your@email.com"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;textarea</span> <span class="attr">name</span>=<span class="value">"message"</span> <span class="attr">placeholder</span>=<span class="value">"Your message..."</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
 </div>
+                    <button id="GeneratedCode" class="btn-small">Copy Code Snippet</button>
+                </div>
+            </div>
 
-<h2 id="contact-form">Example: Contact Form</h2>
-<p>Complete contact form example with styling:</p>
+            <div class="alert alert-warning">
+                <strong>Important:</strong> Remove any trailing ''' characters if present in the generated code.
+            </div>
 
-<div class="code-example">
-    <div class="code-header">
-        <span class="code-title">Complete Contact Form</span>
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <h2 id="spam-protection">Spam Mitigation</h2>
+            <p>While Dropform includes comprehensive spam protection, we recommend implementing a honeypot field for additional security:</p>
+
+            <div class="code-example">
+                <div class="code-header">
+                    <span class="code-title">Honeypot Implementation</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+<div class="code-block">
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"_honeypot"</span> <span class="attr">style</span>=<span class="value">"display: none;"</span> <span class="attr">tabindex</span>=<span class="value">"-1"</span><span class="tag">&gt;</span>
+</div>
+            </div>
+
+            <h2 id="contact-form">Example: Standard Contact Form</h2>
+            <p>Complete contact form implementation with styling:</p>
+
+            <div class="code-example">
+                <div class="code-header">
+                    <span class="code-title">Complete Contact Form Implementation</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+
+<div class="code-block">
+<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"https://dropform.dev/submit/"</span> <span class="attr">method</span>=<span class="value">"POST"</span> <span class="attr">class</span>=<span class="value">"contact-form"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">hidden</span>=<span class="value">"text"</span> <span class="attr">token</span>=<span class="value">"token"</span> <span class="attr">placeholder</span>=<span class="value">"15157452c-1275ffr-41fv17h745"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"name"</span><span class="tag">&gt;</span>Full Name<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">id</span>=<span class="value">"name"</span> <span class="attr">name</span>=<span class="value">"name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                                    
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"email"</span><span class="tag">&gt;</span>Email Address<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">id</span>=<span class="value">"email"</span> <span class="attr">name</span>=<span class="value">"email"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                                    
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"subject"</span><span class="tag">&gt;</span>Subject<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"subject"</span> <span class="attr">name</span>=<span class="value">"subject"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                                    
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"message"</span><span class="tag">&gt;</span>Message<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;textarea</span> <span class="attr">id</span>=<span class="value">"message"</span> <span class="attr">name</span>=<span class="value">"message"</span> <span class="attr">rows</span>=<span class="value">"5"</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+                                    
+<span class="comment">/* Honeypot implementation for enhanced spam protection */</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"_honeypot"</span> <span class="attr">style</span>=<span class="value">"display: none;"</span> <span class="attr">tabindex</span>=<span class="value">"-1"</span><span class="tag">&gt;</span>
+                                    
+<span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span> <span class="attr">class</span>=<span class="value">"submit-btn"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="code-block">
-    <span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"https://dropform.dev/submit/"</span> <span class="attr">method</span>=<span class="value">"POST"</span> <span class="attr">class</span>=<span class="value">"contact-form"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"name"</span><span class="tag">&gt;</span>Full Name<span class="tag">&lt;/label&gt;</span>
-    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">id</span>=<span class="value">"name"</span> <span class="attr">name</span>=<span class="value">"name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;/div&gt;</span>
-                        
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"email"</span><span class="tag">&gt;</span>Email Address<span class="tag">&lt;/label&gt;</span>
-    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">id</span>=<span class="value">"email"</span> <span class="attr">name</span>=<span class="value">"email"</span> <span class="attr">required</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;/div&gt;</span>
-                        
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"subject"</span><span class="tag">&gt;</span>Subject<span class="tag">&lt;/label&gt;</span>
-    <span class="tag">&lt;select</span> <span class="attr">id</span>=<span class="value">"subject"</span> <span class="attr">name</span>=<span class="value">"subject"</span> <span class="attr">required</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="value">""</span><span class="tag">&gt;</span>Select a subject<span class="tag">&lt;/option&gt;</span>
-    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="value">"general"</span><span class="tag">&gt;</span>General Inquiry<span class="tag">&lt;/option&gt;</span>
-    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="value">"support"</span><span class="tag">&gt;</span>Support<span class="tag">&lt;/option&gt;</span>
-    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="value">"business"</span><span class="tag">&gt;</span>Business<span class="tag">&lt;/option&gt;</span>
-    <span class="tag">&lt;/select&gt;</span>
-    <span class="tag">&lt;/div&gt;</span>
-                        
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"form-group"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"message"</span><span class="tag">&gt;</span>Message<span class="tag">&lt;/label&gt;</span>
-    <span class="tag">&lt;textarea</span> <span class="attr">id</span>=<span class="value">"message"</span> <span class="attr">name</span>=<span class="value">"message"</span> <span class="attr">rows</span>=<span class="value">"5"</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
-    <span class="tag">&lt;/div&gt;</span>
-                        
-    <span class="comment">/* Hidden redirect field */</span>
-    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"hidden"</span> <span class="attr">name</span>=<span class="value">"_redirect"</span> <span class="attr">value</span>=<span class="value">"https://yoursite.com/thank-you"</span><span class="tag">&gt;</span>
-                        
-    <span class="comment">/* Honeypot for spam protection */</span>
-    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">name</span>=<span class="value">"_honeypot"</span> <span class="attr">style</span>=<span class="value">"display: none;"</span> <span class="attr">tabindex</span>=<span class="value">"-1"</span><span class="tag">&gt;</span>
-                        
-    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span> <span class="attr">class</span>=<span class="value">"submit-btn"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
-    <span class="tag">&lt;/form&gt;</span>
-
-</div>
-</div>
-</div>
 <!---->
 
 </main>
