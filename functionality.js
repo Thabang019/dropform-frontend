@@ -367,7 +367,7 @@
                 }
 
             const genAI = new window.GoogleGenerativeAI(apiKey);
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
             console.log("Sending request to Gemini...");
 
@@ -376,7 +376,7 @@
 
                 Requirements:
                 1. Basic structure must be:
-                <form action="https://dropform.dev/your-unique-id" method="POST">
+                <form action="https://dropform.dev/submit" method="POST">
                 <input type="hidden" name="token" value="${token}">
                 <!-- fields go here -->
                 <button type="submit">Send Message</button>
