@@ -263,7 +263,7 @@
     document.getElementById("GeneratedCode").addEventListener("click", copyGeneratedCode);
     
         
-    const GEMINI_API_KEY = "AIzaSyC6D0f4-yB-JJD54aqhtpJOzU6SGMK4hvk"; // Replace with your actual API key
+    const GEMINI_API_KEY = process.env.GOOGLE_API_KEY; // Replace with your actual API key
         
         async function generateForm() {
             const prompt = document.getElementById("prompt-input").value.trim();
