@@ -76,7 +76,7 @@
         });
     
     // Replace this with your actual backend URL
-        const API_BASE_URL = 'http://localhost:8080/api/user/send';
+        const API_BASE_URL = 'https://dropform-gtq9.onrender.com/api/user/send';
     
     // Handle Login/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
@@ -161,7 +161,7 @@
 
     // Utility to generate form
         function generateStaticForm(token) {
-                return `<form action="https://dropform.dev/submit/" method="POST">
+                return `<form action="https://dropform-gtq9.onrender.com/api/user/send" method="POST">
         <input type="hidden" name="token" value="${token}">
 
         <label>Name:</label>
@@ -238,7 +238,7 @@
             };
 
             try {
-                const response = await fetch('http://localhost:8080/api/email/send', {
+                const response = await fetch('https://dropform-gtq9.onrender.com/api/email/send', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -376,7 +376,7 @@
 
                 Requirements:
                 1. Basic structure must be:
-                <form action="https://dropform.dev/submit" method="POST">
+                <form action="https://dropform-gtq9.onrender.com/api/email/send" method="POST">
                 <input type="hidden" name="token" value="${token}">
                 <!-- fields go here -->
                 <button type="submit">Send Message</button>
