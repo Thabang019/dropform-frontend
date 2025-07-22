@@ -161,7 +161,7 @@
 
     // Utility to generate form
         function generateStaticForm(token) {
-                return `<form action="https://dropform-gtq9.onrender.com/api/user/send" method="POST">
+                return `<form action="https://dropform-gtq9.onrender.com/api/email/send" method="POST">
         <input type="hidden" name="token" value="${token}">
 
         <label>Name:</label>
